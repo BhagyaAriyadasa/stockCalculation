@@ -22,7 +22,15 @@ public class InvoiceItemEntity{
 	@SerializedName("Qty")
 	private int qty;
 
-	public void setUID(int uID){
+    public InvoiceItemEntity(int type, int priceUID, int invoiceUID, int itemUID, int qty) {
+		this.type=type;
+		this.priceUID=priceUID;
+		this.invoiceUID=invoiceUID;
+		this.itemUID=itemUID;
+		this.qty=qty;
+    }
+
+    public void setUID(int uID){
 		this.uID = uID;
 	}
 

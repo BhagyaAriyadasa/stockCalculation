@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteStatement;
 
 import com.axiTraining.stockcalculation.Utils;
 import com.axiTraining.stockcalculation.database.DataBaseHelper;
+import com.axiTraining.stockcalculation.database.query_entity.InvoicePageDataEntity;
 import com.axiTraining.stockcalculation.database.query_entity.VehicleLoadingEntity;
 import com.axiTraining.stockcalculation.database.table_entity.ItemEntity;
 import com.google.gson.Gson;
@@ -58,6 +59,26 @@ public class ItemDS {
         items.add(new ItemEntity(2,"Test 2"));
 
         createOrUpdate(items);
+    }
+
+    public List<InvoicePageDataEntity> getAllItemWithStockAndPrice() throws JSONException{
+        List<InvoicePageDataEntity> list = new ArrayList<>();
+        String sql = "select i.UID as ItemUID, p.UID as PriceUID,i.Name as ItemName,p.RPL,w.Stock from Item i join Price p on i.UID=p.ItemUID join WareHouse w on i.UID=w.ItemUID" +
+                " where p.UID = w.PriceUID group by i.UID, p.UID, i.Name";
+        try{
+            dataBaseHelper.getDB().beginTransaction();
+            JSONArray array = Utils.getArray(dataBaseHelper.getDB().rawQuery(sql,null));
+
+            for(int i = 0; i<array.length(); i++){
+                list.add(new Gson().fromJson(array.getJSONObject(i).toString(), InvoicePageDataEntity.class));
+            }
+            dataBaseHelper.getDB().setTransactionSuccessful();
+        }catch (Exception e){
+            System.err.println(e);
+        }finally {
+            dataBaseHelper.getDB().endTransaction();
+        }
+        return list;
     }
 
     public List<VehicleLoadingEntity> getAllItemWithPrice() throws JSONException {

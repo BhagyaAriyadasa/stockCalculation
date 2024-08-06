@@ -35,13 +35,25 @@
 
         <TextView
             android:id="@+id/stockTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:padding="2dp"
             android:textColor="#FF0000"
             android:textSize="20sp"
             android:layout_centerHorizontal="true"
             android:text="Stock" />
+
+        <TextView
+            android:id="@+id/qtyTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp"
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:layout_centerHorizontal="true"
+            android:text="Qty" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListView"
@@ -57,8 +69,8 @@
         android:text="Submit"/>
 
     <Button
-        android:id="@+id/buttonToInvoice"
+        android:id="@+id/buttonToWarehouse"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Go To Invoice"/>
+        android:text="Go To Warehouse"/>
 </LinearLayout>

@@ -2,7 +2,7 @@ package com.axiTraining.stockcalculation.database.query_entity;
 
 import com.google.gson.annotations.SerializedName;
 
-public class VehicleLoadingEntity{
+public class InvoicePageDataEntity{
 
 	@SerializedName("PriceUID")
 	private int priceUID;
@@ -12,6 +12,9 @@ public class VehicleLoadingEntity{
 
 	@SerializedName("ItemName")
 	private String itemName;
+
+	@SerializedName("Stock")
+	private int stock;
 
 	@SerializedName("RPL")
 	private double rPL;
@@ -40,6 +43,14 @@ public class VehicleLoadingEntity{
 
 	public String getItemName(){
 		return itemName;
+	}
+
+	public void setStock(int stock){
+		this.stock = stock;
+	}
+
+	public int getStock(){
+		return stock;
 	}
 
 	public void setRPL(double rPL){

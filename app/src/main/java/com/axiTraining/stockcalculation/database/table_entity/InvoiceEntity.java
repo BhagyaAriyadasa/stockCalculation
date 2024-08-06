@@ -16,6 +16,16 @@ public class InvoiceEntity{
 	@SerializedName("Date")
 	private String date;
 
+	@SerializedName("ItemUID")
+	private int itemUID;
+
+	public InvoiceEntity(double totalPrice, int qty, String date, int itemUID) {
+		this.totalPrice=totalPrice;
+		this.qty=qty;
+		this.date=date;
+		this.itemUID=itemUID;
+	}
+
 	public void setUID(int uID){
 		this.uID = uID;
 	}
@@ -46,5 +56,13 @@ public class InvoiceEntity{
 
 	public String getDate(){
 		return date;
+	}
+
+	public int getItemUID() {
+		return itemUID;
+	}
+
+	public void setItemUID(int itemUID) {
+		this.itemUID = itemUID;
 	}
 }

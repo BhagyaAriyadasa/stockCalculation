@@ -15,6 +15,11 @@ import java.util.Arrays;
 
 public class Utils {
 
+    public static boolean checkStockField = false;
+    public static int lastInsertedLoginUId = -1;
+    public static int checkIsInvoice = 0;
+    public static boolean checkValidQty = true;
+
     public static JSONArray getArray(Cursor cursor) {
 
         JSONArray resultSet = new JSONArray();

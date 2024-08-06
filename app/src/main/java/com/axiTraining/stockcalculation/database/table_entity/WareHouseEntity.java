@@ -16,7 +16,13 @@ public class WareHouseEntity{
 	@SerializedName("Stock")
 	private int stock;
 
-	public void setUID(int uID){
+    public WareHouseEntity(int priceUID, int itemUID, int qty) {
+		this.priceUID=priceUID;
+		this.itemUID=itemUID;
+		this.stock=qty;
+    }
+
+    public void setUID(int uID){
 		this.uID = uID;
 	}
 

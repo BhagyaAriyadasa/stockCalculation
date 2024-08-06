@@ -1,35 +1,30 @@
 package com.axiTraining.stockcalculation.presentation.vehicle_loading_activity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.axiTraining.stockcalculation.R;
-import com.axiTraining.stockcalculation.database.data_service.ItemDS;
-import com.axiTraining.stockcalculation.database.query_entity.VehicleLoadingEntity;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.axiTraining.stockcalculation.presentation.invoice_activity.InvoiceActivity;
+import com.axiTraining.stockcalculation.presentation.vehicle_loading_activity.sub_activity.VehicleLoadingAdapter;
 
 public class VehicleLoadingActivity extends AppCompatActivity {
     TextView itemTextView,rplTextView,stockTextView;
-    EditText stockEditText;
-    ListView itemListView, rplListView;
-    ItemDS itemDS;
+    RecyclerView recyclerView;
+    Button submitBtn,goToInvoice;
+    VehicleLoadingActivityViewModel viewModel;
 
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_loading);
         viewInt();
-        itemDS = new ItemDS(this);
         loadVehicleLoadingData();
     }
 
@@ -37,37 +32,29 @@ public class VehicleLoadingActivity extends AppCompatActivity {
         itemTextView = findViewById(R.id.itemTextView);
         rplTextView = findViewById(R.id.rplTextView);
         stockTextView = findViewById(R.id.stockTextView);
-        stockEditText = findViewById(R.id.stockEditText);
-        itemListView = findViewById(R.id.itemList);
-        rplListView = findViewById(R.id.priceList);
+        recyclerView = findViewById(R.id.recyclerListView);
+        submitBtn = findViewById(R.id.buttonSubmit);
+        goToInvoice = findViewById(R.id.buttonToInvoice);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        viewModel= new ViewModelProvider(this).get(VehicleLoadingActivityViewModel.class);
+
+        submitBtn.setOnClickListener(view -> submitFunction());
+        goToInvoice.setOnClickListener(view -> goToInvoiceFunction());
     }
 
     private void loadVehicleLoadingData() {
-        List<VehicleLoadingEntity> vehicleLoadingEntities;
-        try {
-            vehicleLoadingEntities = itemDS.getAllItemWithPrice();
-            List<String> itemNames = new ArrayList<>();
-            List<String> rplValues = new ArrayList<>();
-
-            for (VehicleLoadingEntity entity : vehicleLoadingEntities) {
-                itemNames.add(entity.getItemName());
-                rplValues.add(String.valueOf(entity.getRPL()));
-            }
-
-            Log.d("VehicleLoading", "Item Names: " + itemNames);
-            Log.d("VehicleLoading", "RPL Values: " + rplValues);
-
-            ArrayAdapter<String> itemAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, itemNames);
-            ArrayAdapter<String> rplAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, rplValues);
-
-            itemListView.setAdapter(itemAdapter);
-            rplListView.setAdapter(rplAdapter);
-
-            Log.d("VehicleLoading", "Adapters set successfully.");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        viewModel.fetchItemListWithPrice(this);
+        VehicleLoadingAdapter adapter = new VehicleLoadingAdapter(this, viewModel);
+        recyclerView.setAdapter(adapter);
     }
 
+    private void submitFunction(){
+        viewModel.postWareHouse(this);
+    }
+
+    private void goToInvoiceFunction(){
+        Intent intent=new Intent(VehicleLoadingActivity.this,InvoiceActivity.class);
+        startActivity(intent);
+    }
 }
